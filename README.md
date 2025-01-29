@@ -30,9 +30,9 @@ A command-line interface (CLI) application to manage a list of books. This appli
 1.  **Clone the repository:**
 
     ```bash
-    git clone https://github.com/<your-username>/book-tracker-cli.git
+    git clone https://github.com/tony-the-coder/book-tracker-cli.git
     ```
-    (Replace `<your-username>` with your actual GitHub username)
+    
 
 2.  **Navigate to the project directory:**
 
