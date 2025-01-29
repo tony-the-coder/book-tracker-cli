@@ -84,11 +84,12 @@ def prompt_read_book():
 
 def prompt_delete_book():
     delete_book = input('Enter the title of the book you want to delete: ')
+
     for book in database.books:
        if book[0] == delete_book:
            database.books.remove(book)
            print(f'{delete_book} has been deleted from the database.')
-        return
+           return
     print(f'{delete_book} not found in database.')
     return
 
