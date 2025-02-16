@@ -1,3 +1,4 @@
+"""This is the main file for the book store application. It contains the menu"""
 from utils import database
 
 USER_CHOICE = """
@@ -10,6 +11,8 @@ Enter:
 Your choice: """
 
 class Book:
+    """I created a class for the Book object. I also created a class method to create
+    a new instance of the Book class"""
     def __init__(self, title, author, read):
         self.title = title
         self.author = author
@@ -17,11 +20,13 @@ class Book:
 
     @classmethod
     def from_input(cls):
-        title= input('Enter the book title: ')
-        author = input('Enter the book author: ')
+        """This class method creates a new instance of the Book class using the user's input"""
+        title= input('Enter the book title: ').title() # Added .title() here
+        author = input('Enter the book author: ').title() # Added .title() here
         return cls(title, author, False)
 
 def menu():
+    """This displays the menu in the terminal and calls the appropriate"""
     try:
         user_input = input(USER_CHOICE).lower()
         while user_input != 'q':
@@ -41,12 +46,15 @@ def menu():
 
 
 def get_book_title():
+    """This function returns a list of the titles of the books in the database"""
     return [book[0] for book in database.books]
+
 
 def prompt_add_book():
     """Where I messed up here was that I was overwriting the new_book variable with each new input.
     I should have appended the new_book to the database.books list.
-    I was able to accomplish this by using the Book.from_input() method to create a new instance of the Book class using
+    I was able to accomplish this by using the Book.from_input() method to create a new instance
+    of the Book class using
     the @classmethod."""
     # new_book.title = input('Enter the book title: '),
     # new_book.author = input('Enter the book author: ')
@@ -58,20 +66,23 @@ def prompt_add_book():
         print('\nBook already in database, please review the book title and try again. \n')
 
 def list_books():
+    """This function prints the books in the database"""
     if not database.books:
         print('No books in the database')
     else:
         print(database.books)
 
 def prompt_read_book():
-
-    read_book = input('Enter the title of the book you just read: ')
-    # new_book = Book.from_input() I realized that I don't need to create a new instance of the Book class here.
+    """This function marks a book as read"""
+    read_book = input('Enter the title of the book you just read: ').title() # Added .title() here
+    # new_book = Book.from_input() I realized that I don't need
+    # to create a new instance of the Book class here.
     # if new_book.title not in get_book_title():
     #     database.books.append([new_book.title, new_book.author, new_book.read])
     # else:
     #     database.books.append([new_book.title, new_book.author, new_book.read = True])
-    # I was foolish enough to try this, and it obviously didn't work. I was trying to change the value of the read attribute
+    # I was foolish enough to try this, and it obviously didn't work.
+    # I was trying to change the value of the read attribute
     # book = [book for book in database.books if book[0] == read_book]
     # book = True
     for book in database.books:
@@ -83,16 +94,16 @@ def prompt_read_book():
 
 
 def prompt_delete_book():
-    delete_book = input('Enter the title of the book you want to delete: ')
+    """This function deletes a book from the database"""
+    delete_book = input('Enter the title of the book you want to delete: ').title() # Added .title() here
 
     for book in database.books:
-       if book[0] == delete_book:
-           database.books.remove(book)
-           print(f'{delete_book} has been deleted from the database.')
-           return
+        if book[0] == delete_book:
+            database.books.remove(book)
+            print(f'{delete_book} has been deleted from the database.')
+            return
     print(f'{delete_book} not found in database.')
     return
 
 
 menu()
-
