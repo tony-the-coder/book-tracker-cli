@@ -1,6 +1,6 @@
 """This is the main file for the book store application. It contains the menu"""
-from utils import database
-
+# from utils import database
+books = []
 USER_CHOICE = """
 Enter:
 - 'a' to add a new book
