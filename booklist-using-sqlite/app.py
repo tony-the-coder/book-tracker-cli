@@ -12,7 +12,6 @@ Enter:
 Your choice: """
 
 
-
 def menu():
     """This displays the menu in the terminal and calls the appropriate
         function based on the user's input."""
@@ -40,8 +39,14 @@ def prompt_add_book():
     """This function prompts the user to enter the title and author of a book"""
     name = input('Enter the book title: ').title()
     author = input('Enter the book author: ').title()
-    database.add_book(name, author)
 
+    if not name or not author:
+        print('Please enter a valid title and author.')
+        return
+    try:
+      database.add_book(name, author)
+    except Exception as e:
+      print(f"An error occurred: {e}")
 
 def list_books():
     """The instructor only used a loop to print the books in the database.

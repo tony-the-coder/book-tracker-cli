@@ -3,31 +3,48 @@
 Concerned with storing and retrieving data from a SQLite3 database.
 
 """
+from typing import List, Dict
 from .database_connection import DatabaseConnection
 
 
-def create_book_table():
-    """Create the books table in the SQLite3 Database."""
+def create_book_table() -> None:
+    """Creates the 'books' table in the database if it doesn't exist.
+        The table contains columns for the book name (primary key), author,
+        and whether the book has been read."""
+
     with DatabaseConnection('data.db') as connection:
         cursor = connection.cursor()
 
-        cursor.execute('CREATE TABLE IF NOT EXISTS books ('
-                       '    name text primary key, author text, read integer)')
+        cursor.execute('''CREATE TABLE IF NOT EXISTS books (
+                            name text primary key, 
+                            author text, 
+                            read integer)''')
 
-def add_book(name, author):
-    """Add a book the book database."""
+def add_book(name: str, author: str) -> None:
+    """Adds a new book to the database.
+
+    Args:
+        name: The name of the book.
+        author: The author of the book.
+
+    Raises:
+        ValueError: If the book name or author is empty.
+    """
+    if not name or not author:
+        raise ValueError("Book title and author cannot be empty.")
+
     with DatabaseConnection('data.db') as connection:
         cursor = connection.cursor()
         try:
             cursor.execute('INSERT INTO books VALUES(?,?, 0)', (name, author))
-        except Exception as e:  # Catch a generic exception
-            if "UNIQUE constraint failed" in str(e):  # Check the error message
+        except Exception as err:
+            if "UNIQUE constraint failed" in str(err):
                 print(f"{name} by {author} already exists in the database.")
             else:
-                raise e  # Reraise the exception if it's not the one you expect
+                raise err
 
 
-def get_all_books():
+def get_all_books() -> List[Dict[str, str]]:
     """Return a list of all books using a dictionary and comprehension."""
     with DatabaseConnection('data.db') as connection:
         cursor = connection.cursor()
