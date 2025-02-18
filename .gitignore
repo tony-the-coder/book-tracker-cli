@@ -2,3 +2,5 @@
 /booklist-files/books.txt
 /booklist-using-json/books.json
 /booklist-using-json/utils/books.txt
+/booklist-using-sqlite/books.json
+/booklist-using-sqlite/data.db

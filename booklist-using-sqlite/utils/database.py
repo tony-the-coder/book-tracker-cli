@@ -3,61 +3,50 @@
 Concerned with storing and retrieving data from a SQLite3 database.
 
 """
-import sqlite3
+from .database_connection import DatabaseConnection
 
 
 def create_book_table():
     """Create the books table in the SQLite3 Database."""
-    connection = sqlite3.connect('data.db')
-    cursor = connection.cursor()
+    with DatabaseConnection('data.db') as connection:
+        cursor = connection.cursor()
 
-    cursor.execute('CREATE TABLE IF NOT EXISTS books ('
-                   '    name text primary key, author text, read integer)')
-    connection.commit()
-    connection.close()
-
+        cursor.execute('CREATE TABLE IF NOT EXISTS books ('
+                       '    name text primary key, author text, read integer)')
 
 def add_book(name, author):
     """Add a book the book database."""
-    connection = sqlite3.connect('data.db')
-    cursor = connection.cursor()
-    try:
-        cursor.execute('INSERT INTO books VALUES(?, ?, 0)', (name, author))
-        connection.commit()
-    except sqlite3.IntegrityError:
-        print(f"{name} by {author} already exists in the database.")
-    finally:
-        connection.close()
+    with DatabaseConnection('data.db') as connection:
+        cursor = connection.cursor()
+        try:
+            cursor.execute('INSERT INTO books VALUES(?,?, 0)', (name, author))
+        except Exception as e:  # Catch a generic exception
+            if "UNIQUE constraint failed" in str(e):  # Check the error message
+                print(f"{name} by {author} already exists in the database.")
+            else:
+                raise e  # Reraise the exception if it's not the one you expect
 
 
 def get_all_books():
     """Return a list of all books using a dictionary and comprehension."""
-    connection = sqlite3.connect('data.db')
-    cursor = connection.cursor()
+    with DatabaseConnection('data.db') as connection:
+        cursor = connection.cursor()
 
-    cursor.execute('SELECT name, author, read FROM Books')
-    books = [{'name': row[0],'author': row[1], 'read': row[2]} for row in cursor.fetchall()]
-    connection.close()
+        cursor.execute('SELECT name, author, read FROM Books')
+        books = [{'name': row[0],'author': row[1], 'read': row[2]} for row in cursor.fetchall()]
     return books
 
 
 def mark_book_as_read(name):
-    """Updates aa book as read in the database."""
+    """Updates a book as read in the database."""
+    with DatabaseConnection('data.db') as connection:
+        cursor = connection.cursor()
+        cursor.execute('UPDATE books SET read=1 WHERE name=?', (name,))
 
-    connection = sqlite3.connect('data.db')
-    cursor = connection.cursor()
-
-    cursor.execute('UPDATE books SET read=1 WHERE name=?', (name,))
-
-    connection.commit()
-    connection.close()
 
 def delete_book(name):
     """Deletes a book from the database."""
-    connection = sqlite3.connect('data.db')
-    cursor = connection.cursor()
+    with DatabaseConnection('data.db') as connection:
+        cursor = connection.cursor()
 
-    cursor.execute('DELETE FROM books WHERE name=?', (name,))
-
-    connection.commit()
-    connection.close()
+        cursor.execute('DELETE FROM books WHERE name=?', (name,))
