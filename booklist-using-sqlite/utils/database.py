@@ -21,11 +21,13 @@ def add_book(name, author):
     """Add a book the book database."""
     connection = sqlite3.connect('data.db')
     cursor = connection.cursor()
-
-    cursor.execute('INSERT INTO books VALUES(?, ?, 0)', (name, author))
-
-    connection.commit()
-    connection.close()
+    try:
+        cursor.execute('INSERT INTO books VALUES(?, ?, 0)', (name, author))
+        connection.commit()
+    except sqlite3.IntegrityError:
+        print(f"{name} by {author} already exists in the database.")
+    finally:
+        connection.close()
 
 
 def get_all_books():
