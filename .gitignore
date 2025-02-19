@@ -2,7 +2,8 @@
 /booklist-files/books.txt
 /booklist-using-json/books.json
 /booklist-using-json/utils/books.txt
-/booklist-using-sqlite/books.json
-/booklist-using-sqlite/data.db
+/booklist-using-sql-and-flask/books.json
+/booklist-using-sql-and-flask/data.db
 /booklist-using-sqlite/node_modules/
-/booklist-using-sqlite/package-lock.json
+/booklist-using-sql-and-flask/package-lock.json
+/booklist-using-sql-and-flask/node_modules/
