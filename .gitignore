@@ -4,3 +4,5 @@
 /booklist-using-json/utils/books.txt
 /booklist-using-sqlite/books.json
 /booklist-using-sqlite/data.db
+/booklist-using-sqlite/node_modules/
+/booklist-using-sqlite/package-lock.json
